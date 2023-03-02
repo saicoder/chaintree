@@ -7,6 +7,8 @@ import { useState } from 'react'
 import IconSelectorModal from '../components/icon-selector-modal'
 import { NewItem } from '../components/new-item'
 import { useProfile } from '@/services/profile'
+import { SortableList } from '@/components/sortable-list'
+import { nanoid } from 'nanoid'
 
 export default function Home() {
   const {
@@ -27,10 +29,14 @@ export default function Home() {
   }
 
   const onAddNew = (type: LinkType) => {
-    if (type === 'header') setItems([...items, { type: 'header', label: '' }])
-    if (type === 'link') setItems([...items, { type: 'link', label: '', url: '' }])
+    const addNew = (item: ProfileItem) => {
+      setItems([...items, item])
+    }
+
+    if (type === 'header') addNew({ type: 'header', label: '', id: nanoid() })
+    if (type === 'link') addNew({ type: 'link', label: '', url: '', id: nanoid() })
     if (type === 'wallet')
-      setItems([...items, { type: 'wallet', label: '', address: '', blockchain: 'Solana' }])
+      addNew({ type: 'wallet', label: '', address: '', blockchain: 'Solana', id: nanoid() })
   }
 
   return (
@@ -39,22 +45,25 @@ export default function Home() {
         <NewItem onAddNew={onAddNew} />
       </div>
 
-      {items.map((t, i) => (
-        <Item
-          item={t}
-          key={i}
-          onSetIcon={setIconSelector}
-          onRemove={() => {
-            const newItems = [...items]
-            newItems.splice(i, 1)
-
-            setItems(newItems)
-          }}
-          onUpdate={(newItem) => {
-            setItems(items.map((t, ix) => (ix == i ? newItem : t)))
-          }}
-        />
-      ))}
+      <SortableList
+        items={items}
+        extractKey={(t) => t.id}
+        onListReorder={(items) => setItems(items)}
+        renderItem={(t, handle) => (
+          <Item
+            item={t}
+            key={t.id}
+            onSetIcon={setIconSelector}
+            handle={handle}
+            onRemove={() => {
+              setItems(items.filter((tx) => tx.id !== t.id))
+            }}
+            onUpdate={(newItem) => {
+              setItems(items.map((tx) => (tx.id === t.id ? newItem : tx)))
+            }}
+          />
+        )}
+      />
 
       <IconSelectorModal
         open={!!iconSelector}

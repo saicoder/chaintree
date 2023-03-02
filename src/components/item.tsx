@@ -3,15 +3,18 @@ import { ItemIcon } from './item-icon'
 import { TbTrash } from 'react-icons/tb'
 import { Blockchains, ProfileItem } from '../services/link'
 import { useEffect, useRef, useState } from 'react'
+import { useSortable } from '@dnd-kit/sortable'
+import { Handle } from './sortable-list'
 
 export interface ItemProps {
   item: ProfileItem
   onUpdate: (item: ProfileItem) => void
   onSetIcon: (item: ProfileItem) => void
   onRemove: () => void
+  handle: Handle
 }
 
-export function Item({ item, onUpdate, onSetIcon, onRemove }: ItemProps) {
+export function Item({ item, onUpdate, onSetIcon, onRemove, handle }: ItemProps) {
   const [editMode, setEditMode] = useState(false)
   const containerRef = useRef<HTMLDivElement>()
 
@@ -26,13 +29,15 @@ export function Item({ item, onUpdate, onSetIcon, onRemove }: ItemProps) {
     }
   }, [])
 
+  // const { listeners } = useSortable({ id: item.label })
+
   return (
     <div
       ref={(el) => (containerRef.current = el || undefined)}
       className="mb-2 overflow-hidden bg-white shadow-sm rounded-2xl"
     >
       <div className="flex items-center border-t border-gray-100">
-        <div className="px-2">
+        <div className="px-2" {...handle}>
           <MdDragIndicator size={20} className="text-gray-400" />
         </div>
 
