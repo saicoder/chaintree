@@ -26,7 +26,7 @@ export interface WalletAddress {
 
 export type ProfileItem = Link | Header | WalletAddress
 
-export const exampleItems: ProfileItem[] = [
+export const EXAMPLE_ITEMS: ProfileItem[] = [
   {
     type: 'link',
     label: 'Twitter',

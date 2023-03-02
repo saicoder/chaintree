@@ -1,14 +1,23 @@
 import { TbPlus } from 'react-icons/tb'
-import { Layout } from './components/layout'
-import { LinkType, ProfileItem, exampleItems } from './services/link'
+import { Layout } from '../components/layout'
+import { LinkType, ProfileItem, EXAMPLE_ITEMS } from '../services/link'
 
-import { Item } from './components/item'
+import { Item } from '../components/item'
 import { useState } from 'react'
-import IconSelectorModal from './components/icon-selector-modal'
-import { NewItem } from './components/new-item'
+import IconSelectorModal from '../components/icon-selector-modal'
+import { NewItem } from '../components/new-item'
+import { useProfile } from '@/services/profile'
 
 export default function Home() {
-  const [items, setItems] = useState(exampleItems)
+  const {
+    profile: { items },
+    update,
+  } = useProfile()
+
+  const setItems = (items: ProfileItem[]) => {
+    update({ items })
+  }
+
   const [iconSelector, setIconSelector] = useState<ProfileItem>()
 
   const onSetIcon = (icon: string) => {

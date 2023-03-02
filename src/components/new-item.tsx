@@ -19,10 +19,10 @@ export function NewItem(props: NewItemProps) {
       <div
         key="newCont"
         onClick={() => setExpanded(true)}
-        className="flex items-center justify-center w-full h-12 font-medium text-white transition-all bg-indigo-700 rounded-full cursor-pointer"
+        className="flex items-center justify-center w-full h-12 transition-all shadow cursor-pointer rounded-xl bg-brand hover:opacity-70"
       >
-        <TbPlus fontSize={18} />
-        <div className="ml-1">Add</div>
+        <TbPlus fontSize={18} className="font-medium text-white" />
+        <div className="ml-1 font-medium text-white">Add</div>
       </div>
     )
 
