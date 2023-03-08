@@ -1,5 +1,7 @@
 import { ProfileRender } from '@/components/profile-render'
+import { useProfile } from '@/services/profile'
 
 export default function ProfilePage() {
-  return <ProfileRender />
+  const { profile } = useProfile()
+  return <ProfileRender profile={profile} />
 }

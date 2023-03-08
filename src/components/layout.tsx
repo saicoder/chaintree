@@ -3,8 +3,19 @@ import { Logo } from './icon'
 import { IoIosLink, IoMdBrush } from 'react-icons/io'
 import Link from 'next/link'
 import { ProfileRender } from './profile-render'
+import { useProfile } from '@/services/profile'
+import { useEffect, useState } from 'react'
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const { profile } = useProfile()
+  const [editOpen, setEdit] = useState(true)
+
+  useEffect(() => {
+    // setInterval(() => {
+    //   setEdit((e) => !e)
+    // }, 1000)
+  }, [])
+
   return (
     <>
       <Head>
@@ -17,7 +28,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="z-10 flex items-center h-16 shadow-sm">
           <div className="container flex items-center mx-auto">
             <Logo />
-
             <Link
               href="/"
               className="flex items-center p-2 ml-12 text-gray-700 rounded-lg cursor-pointer hover:bg-gray-200"
@@ -25,7 +35,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <IoIosLink size={22} />
               <div className="ml-2 text-base font-semibold">Links</div>
             </Link>
-
             <Link
               href="/theme"
               className="flex items-center p-2 ml-8 text-gray-700 rounded-lg cursor-pointer hover:bg-gray-200"
@@ -35,29 +44,31 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </Link>
           </div>
         </div>
-        <div className="flex flex-1 bg-gray-100">
-          <div className="relative flex-1">
-            <div className="absolute w-full h-full overflow-scroll">
-              <div className="max-w-2xl mx-auto mt-6">{children}</div>
+        <div className="flex flex-col flex-1">
+          <div className="flex flex-1 bg-gray-100">
+            <div className="relative flex-1">
+              <div className="absolute w-full h-full overflow-scroll">
+                <div className="max-w-2xl mx-auto mt-6">{children}</div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center w-full max-w-lg border-l">
+              <div
+                className="bg-white"
+                style={{
+                  height: '70vh',
+                  aspectRatio: '0.48',
+                  borderColor: 'black',
+                  borderWidth: 14,
+                  borderRadius: 50,
+                  position: 'relative',
+                  overflow: 'hidden',
+                }}
+              >
+                <ProfileRender profile={profile} />
+              </div>
             </div>
           </div>
-          <div className="flex items-center justify-center w-full max-w-lg border-l">
-            <Link href="/asd">view</Link>
-            <div
-              className="bg-white"
-              style={{
-                height: '70vh',
-                aspectRatio: '0.48',
-                borderColor: 'black',
-                borderWidth: 14,
-                borderRadius: 50,
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              <ProfileRender />
-            </div>
-          </div>
+          <div className={`shadow transition-all ${editOpen ? 'h-16' : 'h-0'}`}>asd</div>
         </div>
       </main>
     </>

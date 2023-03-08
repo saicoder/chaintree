@@ -1,5 +1,8 @@
 export interface Theme {
-  bg: string // image url or flat color
+  name: string
+
+  bgColor: string
+  bgImage: string // image url or flat color
 
   // button
   buttonBg: string
@@ -12,6 +15,7 @@ export interface Theme {
   textColor: string
 }
 
+import { string } from '@tensorflow/tfjs'
 import t from './themes/pinky.json'
 
 export const DEFAULT_THEME: Theme = t

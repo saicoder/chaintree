@@ -29,8 +29,6 @@ export function Item({ item, onUpdate, onSetIcon, onRemove, handle }: ItemProps)
     }
   }, [])
 
-  // const { listeners } = useSortable({ id: item.label })
-
   return (
     <div
       ref={(el) => (containerRef.current = el || undefined)}

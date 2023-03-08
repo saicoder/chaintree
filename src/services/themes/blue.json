@@ -1,0 +1,10 @@
+{
+    "name": "Blue",
+    "bgColor": "#085472",
+    "bgImage": "https://images.pexels.com/photos/2680270/pexels-photo-2680270.jpeg",
+    "buttonBg": "#002b3d",
+    "buttonTextColor": "#f5feff",
+    "buttonRoundness": "10px",
+    "font": "",
+    "textColor": "#ffffff"
+}

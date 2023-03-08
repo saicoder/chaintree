@@ -1,26 +1,49 @@
+import { ImagePicker } from '@/components/image-picker'
 import { Layout } from '@/components/layout'
 import { useProfile } from '@/services/profile'
 import { Theme } from '@/services/theme'
+import { useEffect, useState } from 'react'
+import Image from 'next/image'
+import { resolveUrl } from '@/services/ipfs'
+import { ProfileRender } from '@/components/profile-render'
 
 export default function ThemePage() {
   const { update, profile } = useProfile()
+  const [imagePicker, setImagePicker] = useState(false)
+  const [themes, setThemes] = useState<Theme[]>([])
   const theme = profile.theme
 
   const updateTheme = (params: Partial<Theme>) => {
     update({ theme: { ...theme, ...params } })
   }
 
+  useEffect(() => {
+    import('@/services/themes/all').then(({ themes }) => setThemes(themes))
+  }, [])
+
   return (
     <Layout>
+      <ImagePicker
+        open={imagePicker}
+        onClose={() => setImagePicker(false)}
+        imageSelected={(url) => {
+          update({ image: url })
+        }}
+      />
+
       <div className="mt-2 text-lg font-semibold text-gray-800">Profile</div>
       <div className="p-5 mt-4 bg-white rounded-lg shadow-sm">
         <div className="flex">
           <div className="">
             <div className="relative w-24 overflow-hidden bg-gray-100 rounded-full aspect-square">
-              <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full cursor-pointer">
+              <div
+                className="absolute top-0 left-0 flex items-center justify-center w-full h-full cursor-pointer"
+                onClick={() => setImagePicker(true)}
+              >
                 <div className="flex-1 text-xs font-semibold text-center text-gray-400">
                   Pick Image
                 </div>
+                {profile.image && <Image src={resolveUrl(profile.image)} alt="profile" fill />}
               </div>
             </div>
           </div>
@@ -56,10 +79,46 @@ export default function ThemePage() {
         </div>
       </div>
 
+      {/* ALL THEMES */}
+
+      <div className="mt-8 text-lg font-semibold text-gray-800">Themes</div>
+      <div className="grid grid-cols-3 gap-3 mt-4">
+        {themes.map((t, i) => (
+          <div
+            key={i}
+            className="relative w-full bg-gray-100 aspect-[0.48] rounded-lg shadow-sm overflow-hidden cursor-pointer hover:opacity-75 transition-all"
+            onClick={() => updateTheme(t)}
+            // style={{ zoom: 0.7 }}
+          >
+            <ProfileRender zoom={0.7} profile={profile} themeOverride={t} noEvents />
+            <div
+              className="absolute bottom-0 w-full p-4 text-sm font-semibold text-black bg-white"
+              // style={{ backgroundColor: 'rgba(255,255,255, 0.96)' }}
+            >
+              {t.name}
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* CUSTOMIZE THEME */}
       <div className="mt-20 text-lg font-semibold text-gray-800">Customize Theme</div>
       <div className="p-5 mt-4 bg-white rounded-lg shadow-sm">
         <div className="px-3 py-2 bg-gray-100 rounded-lg">
+          <label htmlFor="name" className="block text-xs font-medium text-gray-500">
+            Background Color
+          </label>
+          <input
+            id="name"
+            className="w-10 h-10 mt-2 overflow-hidden text-base bg-transparent rounded-md outline-none"
+            type="color"
+            placeholder="Color"
+            value={theme.bgColor}
+            onChange={(e) => updateTheme({ bgColor: e.target.value })}
+          />
+        </div>
+
+        <div className="px-4 py-2 mt-3 bg-gray-100 rounded-lg">
           <label htmlFor="name" className="block text-xs font-medium text-gray-500">
             Background Image
           </label>
@@ -68,8 +127,8 @@ export default function ThemePage() {
             className="w-full mt-2 text-base bg-transparent outline-none"
             type="url"
             placeholder="URL To Image"
-            value={theme.bg}
-            onChange={(e) => updateTheme({ bg: e.target.value })}
+            value={theme.bgImage}
+            onChange={(e) => updateTheme({ bgImage: e.target.value })}
           />
         </div>
 
