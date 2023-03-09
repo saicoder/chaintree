@@ -31,8 +31,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <Head>
         <title>Chain Tree</title>
         <meta name="description" content="Chain Tree" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col h-screen">
         <div className="z-10 flex items-center h-16 shadow-sm">

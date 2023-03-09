@@ -1,13 +1,13 @@
 ### TODOs
 
 - [ ] Home page
-- [ ] Solana smart contract
+- [x] Solana smart contract
 - [ ] Solana Wallet integration
 - [ ] Payment modal integration for wallets & Solana Pay
 - [ ] Analytics for page clicks
 - [ ] Record video
 - [ ] Mobile views
-- [ ] Create Profile Page
+- [x] Create Profile Page
 
 - [x] Predefined Themes
 - [x] IPFS file upload & resolver
