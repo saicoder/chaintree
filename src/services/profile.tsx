@@ -1,6 +1,11 @@
-import React, { useContext, useState } from 'react'
 import { EXAMPLE_ITEMS, ProfileItem } from './link'
 import { DEFAULT_THEME, Theme } from './theme'
+import { createJSONStorage, persist } from 'zustand/middleware'
+
+import { create } from 'zustand'
+import { useCallback } from 'react'
+
+import { isEqual } from 'lodash'
 
 export interface Profile {
   slug: string
@@ -13,41 +18,75 @@ export interface Profile {
 }
 
 export const DEFAULT_PROFILE: Profile = {
-  slug: 'john',
+  slug: '',
   image: '',
-  name: 'John Doe',
-  bio: 'example bio',
+  name: '',
+  bio: '',
   items: [...EXAMPLE_ITEMS],
   theme: { ...DEFAULT_THEME },
 }
 
-export interface ProfileContext {
+export interface ProfileStore {
+  chainProfile: Profile
   profile: Profile
-  update: (_: Partial<Profile>) => void
+  isChanged: boolean
+
+  set: (_: Partial<ProfileStore>) => void
+  get: () => ProfileStore
 }
 
-export const ProfileContext = React.createContext<ProfileContext>({
-  profile: DEFAULT_PROFILE,
-  update: () => false,
-})
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-export const useProfile = () => useContext(ProfileContext)
+const useProfileStore = create(
+  persist<ProfileStore>(
+    (set, get) => ({
+      get,
+      set,
 
-export const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
-  const [profile, setProfile] = useState(DEFAULT_PROFILE)
+      chainProfile: DEFAULT_PROFILE,
+      profile: DEFAULT_PROFILE,
+      isChanged: false,
+    }),
+    {
+      name: 'chaintree-store',
+      storage: createJSONStorage(() => ({
+        getItem: async (name) => {
+          await wait(80)
+          return localStorage.getItem(name)
+        },
+        setItem: (name, value) => Promise.resolve(localStorage.setItem(name, value)),
+        removeItem: (key) => Promise.resolve(localStorage.removeItem(key)),
+      })),
+    }
+  )
+)
 
-  const update = (params: Partial<Profile>) => {
-    setProfile({ ...profile, ...params })
+export const useProfile = () => {
+  const { profile, isChanged, get, set } = useProfileStore()
+
+  const update = useCallback(
+    (params: Partial<Profile>) => {
+      const { profile, chainProfile } = get()
+
+      const newProfile = { ...profile, ...params }
+      const isChanged = !isEqual(chainProfile, newProfile)
+
+      set({ profile: newProfile, isChanged })
+    },
+    [get, set]
+  )
+
+  const commitChanges = async () => {
+    const { profile } = get()
+    set({ chainProfile: profile, isChanged: false })
   }
 
-  return (
-    <ProfileContext.Provider
-      value={{
-        profile,
-        update,
-      }}
-    >
-      {children}
-    </ProfileContext.Provider>
-  )
+  const rehydrate = () => {
+    try {
+      const { state } = JSON.parse(localStorage.getItem('chaintree-store')!)
+      set(state)
+    } catch (ex) {}
+  }
+
+  return { profile, update, isChanged, commitChanges, rehydrate }
 }

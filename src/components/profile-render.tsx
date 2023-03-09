@@ -5,10 +5,7 @@ import Image from 'next/image'
 import Jazzicon from 'react-jazzicon'
 import { resolveUrl } from '@/services/ipfs'
 import { Theme } from '@/services/theme'
-
-function seedFromString(seed: string) {
-  return seed.split('').reduce((ac, t) => (t.charCodeAt(0) + ac) % Number.MAX_SAFE_INTEGER, 0)
-}
+import { seedFromString } from '@/services/util'
 
 export interface ProfileRenderProps {
   profile: Profile

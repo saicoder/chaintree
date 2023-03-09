@@ -16,6 +16,7 @@
     "@types/react-dom": "18.0.11",
     "eslint": "8.34.0",
     "eslint-config-next": "13.2.1",
+    "lodash": "^4.17.21",
     "moralis": "^2.14.3",
     "nanoid": "^4.0.1",
     "next": "13.2.1",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@headlessui/react": "^1.7.12",
+    "@types/lodash": "^4.14.191",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "react-icons": "^4.7.1",

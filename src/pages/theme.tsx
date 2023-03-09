@@ -88,13 +88,9 @@ export default function ThemePage() {
             key={i}
             className="relative w-full bg-gray-100 aspect-[0.48] rounded-lg shadow-sm overflow-hidden cursor-pointer hover:opacity-75 transition-all"
             onClick={() => updateTheme(t)}
-            // style={{ zoom: 0.7 }}
           >
             <ProfileRender zoom={0.7} profile={profile} themeOverride={t} noEvents />
-            <div
-              className="absolute bottom-0 w-full p-4 text-sm font-semibold text-black bg-white"
-              // style={{ backgroundColor: 'rgba(255,255,255, 0.96)' }}
-            >
+            <div className="absolute bottom-0 w-full p-4 text-sm font-semibold text-black bg-white">
               {t.name}
             </div>
           </div>
