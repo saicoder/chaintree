@@ -1,4 +1,4 @@
-import { Profile, useProfile } from '@/services/profile'
+import { Profile } from '@/services/profile'
 import { ItemIcon } from './item-icon'
 import Link from 'next/link'
 import Image from 'next/image'
