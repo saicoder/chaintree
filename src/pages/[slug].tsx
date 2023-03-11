@@ -44,7 +44,7 @@ export default function ProfilePage({ profile }: { profile?: Profile }) {
 
 ProfilePage.getInitialProps = async ({ query }: NextPageContext) => {
   const wallet = new Wallet(Keypair.generate())
-  const connection = new Connection('http://127.0.0.1:8899')
+  const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_ENDPOINT!)
 
   const provider = new AnchorProvider(connection, wallet, {})
   const program = new Program<ChainTree>(idl as any, idl.metadata.address, provider)

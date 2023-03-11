@@ -48,7 +48,7 @@ export const AccountContextProvider = ({ children }: { children: React.ReactNode
       return
     }
 
-    const connection = new Connection('http://127.0.0.1:8899')
+    const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_ENDPOINT!)
     const provider = new AnchorProvider(connection, anchorWallet, {})
     const program = new Program<ChainTree>(idl as any, idl.metadata.address, provider)
 
