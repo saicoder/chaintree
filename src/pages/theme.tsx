@@ -1,14 +1,15 @@
 import { ImagePicker } from '@/components/image-picker'
 import { Layout } from '@/components/layout'
-import { useProfile } from '@/services/profile'
+
 import { Theme } from '@/services/theme'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { resolveUrl } from '@/services/ipfs'
 import { ProfileRender } from '@/components/profile-render'
+import { useProfileEditor } from '@/hooks/useProfileEditor'
 
 export default function ThemePage() {
-  const { update, profile } = useProfile()
+  const { update, profile } = useProfileEditor()
   const [imagePicker, setImagePicker] = useState(false)
   const [themes, setThemes] = useState<Theme[]>([])
   const theme = profile.theme
@@ -82,7 +83,7 @@ export default function ThemePage() {
       {/* ALL THEMES */}
 
       <div className="mt-8 text-lg font-semibold text-gray-800">Themes</div>
-      <div className="grid grid-cols-3 gap-3 mt-4">
+      <div className="grid grid-cols-2 gap-3 mt-4 md:grid-cols-3">
         {themes.map((t, i) => (
           <div
             key={i}

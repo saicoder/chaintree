@@ -1,13 +1,15 @@
 ### TODOs
 
-- [ ] Home page
+- [x] Home page
 - [x] Solana smart contract
-- [ ] Solana Wallet integration
+- [x] Solana Wallet integration
+- [x] Waiting for transaction
 - [ ] Payment modal integration for wallets & Solana Pay
 - [ ] Analytics for page clicks
 - [ ] Record video
 - [ ] Mobile views
 - [x] Create Profile Page
+- [x] Load NFTs from account
 
 - [x] Predefined Themes
 - [x] IPFS file upload & resolver

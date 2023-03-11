@@ -12,6 +12,12 @@ import {
   IoLockClosedOutline,
   IoThumbsUpOutline,
 } from 'react-icons/io5'
+import { useAccount } from '@/hooks/useAccount'
+import { useRef, useState } from 'react'
+import { useProfileEditor } from '@/hooks/useProfileEditor'
+import { DEFAULT_PROFILE } from '@/services/profile'
+import { nanoid } from 'nanoid'
+import { useRouter } from 'next/router'
 
 const features = [
   {
@@ -53,6 +59,65 @@ const features = [
 ]
 
 const HomePage = () => {
+  const router = useRouter()
+
+  const { update } = useProfileEditor()
+  const { connected, connectWallet, account, accountLoading, fetchAccountByUsername, publicKey } =
+    useAccount()
+
+  const [username, setUsername] = useState('')
+  const [usernameError, setUsernameError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const usernameInput = useRef<HTMLInputElement>()
+
+  const onClaim = async () => {
+    if (!publicKey) {
+      connectWallet()
+      return
+    }
+
+    if (username.length < 3 || username.length > 30) {
+      setUsernameError('Username should be between 3 and 30 characters long')
+      return
+    }
+
+    if (!/^[a-z0-9]*$/.test(username)) {
+      setUsernameError('Username can only contain lowercase letters and numbers')
+      return
+    }
+
+    setUsernameError('')
+    setLoading(true)
+
+    const account = await fetchAccountByUsername(username)
+
+    if (account) {
+      setUsernameError('Username is taken')
+      setLoading(false)
+      return
+    }
+
+    update({
+      ...DEFAULT_PROFILE,
+      name: username,
+      bio: 'My bio here',
+      slug: username,
+      items: [
+        {
+          type: 'wallet',
+          address: publicKey,
+          blockchain: 'Solana',
+          id: nanoid(),
+          label: 'My Wallet',
+        },
+      ],
+    })
+
+    router.push('/theme')
+    setLoading(false)
+  }
+
   return (
     <div className="bg-white isolate">
       <Head>
@@ -105,9 +170,32 @@ const HomePage = () => {
             </a>
           </div>
           <div className="lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-              Connect Wallet <span aria-hidden="true">&rarr;</span>
-            </a>
+            {!connected && (
+              <div
+                onClick={connectWallet}
+                className="text-sm font-semibold leading-6 text-gray-900 cursor-pointer hover:opacity-75"
+              >
+                Connect Wallet <span aria-hidden="true">&rarr;</span>
+              </div>
+            )}
+
+            {connected && !account && (
+              <div
+                onClick={() => usernameInput.current?.focus()}
+                className="text-sm font-semibold leading-6 text-gray-900 cursor-pointer hover:opacity-75"
+              >
+                Create Profile <span aria-hidden="true">&rarr;</span>
+              </div>
+            )}
+
+            {!accountLoading && account && (
+              <Link
+                href="/links"
+                className="text-sm font-semibold leading-6 text-gray-900 cursor-pointer hover:opacity-75"
+              >
+                Dashboard <span aria-hidden="true">&rarr;</span>
+              </Link>
+            )}
           </div>
         </nav>
       </div>
@@ -130,15 +218,25 @@ const HomePage = () => {
                         <div className="font-medium">https://chaintr.ee/</div>
                       </div>
                       <input
+                        ref={(e) => (usernameInput.current = e || undefined)}
                         className="px-3 font-medium rounded-l outline-none bg-gray-50"
                         type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
                         placeholder="your username"
                       />
-                      <button className="px-10 font-medium text-white bg-brand hover:opacity-75">
-                        Claim
+                      <button
+                        onClick={onClaim}
+                        className="px-10 font-medium text-white bg-brand hover:opacity-75"
+                      >
+                        {loading ? 'Loading' : 'Claim'}
                       </button>
                     </div>
                   </div>
+
+                  {usernameError && (
+                    <div className="mt-2 text-sm font-medium text-red-500"> - {usernameError}</div>
+                  )}
                 </div>
               </div>
               <div className="flex items-center justify-center px-20 pb-10 md:pb-0 md:px-28">

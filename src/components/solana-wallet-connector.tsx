@@ -1,11 +1,7 @@
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
-import {
-  UnsafeBurnerWalletAdapter,
-  PhantomWalletAdapter,
-  CoinbaseWalletAdapter,
-} from '@solana/wallet-adapter-wallets'
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { clusterApiUrl } from '@solana/web3.js'
 import { useMemo } from 'react'
 
@@ -15,10 +11,7 @@ export function SolanaWalletConnector({ children }: { children: React.ReactNode 
   const network = WalletAdapterNetwork.Devnet
   const endpoint = useMemo(() => 'http://127.0.0.1:8899', [network])
 
-  const wallets = useMemo(
-    () => [new UnsafeBurnerWalletAdapter(), new PhantomWalletAdapter()],
-    [network]
-  )
+  const wallets = useMemo(() => [], [network])
 
   return (
     <ConnectionProvider endpoint={endpoint}>

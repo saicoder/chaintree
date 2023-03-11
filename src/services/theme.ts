@@ -15,14 +15,5 @@ export interface Theme {
   textColor: string
 }
 
-import { string } from '@tensorflow/tfjs'
-import t from './themes/pinky.json'
-
-export const DEFAULT_THEME: Theme = t
-//   bg: 'gray',
-//   buttonBg: '#ff0000',
-//   buttonTextColor: '##000000',
-//   buttonRoundness: '10px',
-//   font: '',
-//   textColor: '#000000',
-// }
+import defaultTheme from './themes/black.json'
+export const DEFAULT_THEME: Theme = defaultTheme

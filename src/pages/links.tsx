@@ -1,20 +1,19 @@
-import { TbPlus } from 'react-icons/tb'
 import { Layout } from '../components/layout'
-import { LinkType, ProfileItem, EXAMPLE_ITEMS } from '../services/link'
+import { LinkType, ProfileItem } from '../services/link'
 
 import { Item } from '../components/item'
 import { useState } from 'react'
 import IconSelectorModal from '../components/icon-selector-modal'
 import { NewItem } from '../components/new-item'
-import { useProfile } from '@/services/profile'
 import { SortableList } from '@/components/sortable-list'
 import { nanoid } from 'nanoid'
+import { useProfileEditor } from '@/hooks/useProfileEditor'
 
 export default function Home() {
   const {
     profile: { items },
     update,
-  } = useProfile()
+  } = useProfileEditor()
 
   const setItems = (items: ProfileItem[]) => {
     update({ items })
