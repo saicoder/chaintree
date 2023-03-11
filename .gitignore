@@ -34,3 +34,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Dapp
+
+dapp/.anchor
+dapp/.DS_Store
+dapp/**/*.rs.bk
+dapp/node_modules
+dapp/test-ledger
+
+dapp/target/*
+!dapp/target/idl
+!dapp/target/types
