@@ -37,7 +37,18 @@ export interface Identifiable {
   id: string
 }
 
+export const isValidSolanaAddress = (address: string): boolean => {
+  try {
+    new PublicKey(address)
+    return true
+  } catch (ex: any) {
+    return false
+  }
+}
+
 export const paymentUrlFor = (wallet: WalletAddress) => {
+  if (!isValidSolanaAddress(wallet.address)) return undefined
+
   return encodeURL({
     label: wallet.label,
     recipient: new PublicKey(wallet.address),
@@ -48,3 +59,14 @@ export const paymentUrlFor = (wallet: WalletAddress) => {
 }
 
 export type ProfileItem = (Link | Header | WalletAddress) & Identifiable
+
+export const validateProfileItem = (item: ProfileItem) => {
+  if (item.type === 'header' && item.label.trim().length === 0) return `Header text is required`
+
+  if (item.type === 'link' && !item.url.startsWith('https://'))
+    return `Link URL is invalid. URL needs to start with https:// protocol.`
+
+  if (item.type === 'wallet' && !isValidSolanaAddress(item.address)) return `Invalid Solana address`
+
+  return undefined
+}

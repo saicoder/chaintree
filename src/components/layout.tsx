@@ -10,7 +10,7 @@ import Jazzicon from 'react-jazzicon'
 import { seedFromString } from '@/services/util'
 import { resolveUrl } from '@/services/ipfs'
 import { useRouter } from 'next/router'
-import { IoEyeOutline, IoShareOutline } from 'react-icons/io5'
+import { IoBarChartOutline, IoEyeOutline, IoShareOutline } from 'react-icons/io5'
 import { useProfileEditor } from '@/hooks/useProfileEditor'
 import { useAccount } from '@/hooks/useAccount'
 import { ConfirmationProgress } from './confirmation-progress'
@@ -67,6 +67,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
             >
               <IoMdBrush size={22} />
               <div className="ml-2 text-base font-semibold">Theme</div>
+            </Link>
+
+            <Link
+              href="/analytics"
+              className="flex items-center h-16 p-3 text-gray-700 cursor-pointer md:ml-6 hover:bg-gray-50"
+              style={{ color: pathname === '/analytics' ? 'black' : undefined }}
+              prefetch
+            >
+              <IoBarChartOutline size={22} />
+              <div className="ml-2 text-base font-semibold">Analytics</div>
             </Link>
 
             <div className="flex-1"></div>

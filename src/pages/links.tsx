@@ -8,8 +8,10 @@ import { NewItem } from '../components/new-item'
 import { SortableList } from '@/components/sortable-list'
 import { nanoid } from 'nanoid'
 import { useProfileEditor } from '@/hooks/useProfileEditor'
+import { useAccount } from '@/hooks/useAccount'
 
 export default function Home() {
+  const { publicKey } = useAccount()
   const {
     profile: { items },
     update,
@@ -35,7 +37,13 @@ export default function Home() {
     if (type === 'header') addNew({ type: 'header', label: '', id: nanoid() })
     if (type === 'link') addNew({ type: 'link', label: '', url: '', id: nanoid() })
     if (type === 'wallet')
-      addNew({ type: 'wallet', label: '', address: '', blockchain: 'Solana', id: nanoid() })
+      addNew({
+        type: 'wallet',
+        label: '',
+        address: publicKey || '',
+        blockchain: 'Solana',
+        id: nanoid(),
+      })
   }
 
   return (

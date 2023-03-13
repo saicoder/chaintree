@@ -12,6 +12,7 @@ import { Web3Storage } from 'web3.storage'
 import idl from '../../dapp/target/idl/chain_tree.json'
 import React from 'react'
 import { useLoaderStore } from '@/components/confirmation-progress'
+import { validateProfileItem } from '@/services/link'
 
 const web3 = new Web3Storage({ token: process.env.NEXT_PUBLIC_WEB3_KEY! })
 
@@ -106,6 +107,13 @@ export const AccountContextProvider = ({ children }: { children: React.ReactNode
   const saveProfile = useCallback(
     async (profile: Profile) => {
       try {
+        const errors = profile.items.map((t) => validateProfileItem(t)).filter((t) => !!t)
+
+        if (errors.length > 0) {
+          alert(errors.join('\n'))
+          return
+        }
+
         showLoader()
 
         const profileContent = JSON.stringify(profile)

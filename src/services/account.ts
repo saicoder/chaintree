@@ -17,3 +17,8 @@ export const getPdaForUsername = (username: string) => {
 
   return pda
 }
+
+export interface LinkClick {
+  username: string
+  linkId: string
+}

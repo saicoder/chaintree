@@ -5,7 +5,7 @@
 - [x] Solana Wallet integration
 - [x] Waiting for transaction
 - [x] Payment modal integration for wallets & Solana Pay
-- [ ] Analytics for page clicks
+- [x] Analytics for page clicks
 - [ ] Record video
 - [x] Mobile views
 - [x] Create Profile Page

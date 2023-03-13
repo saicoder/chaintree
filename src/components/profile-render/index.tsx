@@ -7,7 +7,7 @@ import { resolveUrl } from '@/services/ipfs'
 import { Theme } from '@/services/theme'
 import { seedFromString } from '@/services/util'
 import { PaymentModal } from './payment-modal'
-import { WalletAddress, paymentUrlFor } from '@/services/link'
+import { ProfileItem, WalletAddress, isValidSolanaAddress, paymentUrlFor } from '@/services/link'
 import { useState } from 'react'
 
 export interface ProfileRenderProps {
@@ -20,6 +20,19 @@ export interface ProfileRenderProps {
 export function ProfileRender({ profile, themeOverride, noEvents, zoom }: ProfileRenderProps) {
   const theme = themeOverride || profile.theme
   const [currentWallet, setCurrentWallet] = useState<WalletAddress>()
+
+  const onItemClick = (e: any, item: ProfileItem) => {
+    if (item.type === 'wallet' && isValidSolanaAddress(item.address)) {
+      e.preventDefault()
+      setCurrentWallet(item)
+    }
+
+    if (item.type === 'link') {
+      fetch(`/api/track?username=${profile.slug}&linkId=${item.id}&r=${Math.random()}`).then((t) =>
+        t.json()
+      )
+    }
+  }
 
   return (
     <div
@@ -74,16 +87,9 @@ export function ProfileRender({ profile, themeOverride, noEvents, zoom }: Profil
 
           return (
             <Link
-              href={t.type === 'link' ? t.url : paymentUrlFor(t)}
-              target="_blank"
-              onClick={
-                t.type !== 'wallet'
-                  ? undefined
-                  : (e) => {
-                      e.preventDefault()
-                      setCurrentWallet(t)
-                    }
-              }
+              href={t.type === 'link' ? t.url : paymentUrlFor(t) || '#'}
+              target={t.type === 'link' ? '_blank' : undefined}
+              onClick={(e) => onItemClick(e, t)}
               key={i}
               className="relative block py-4 my-3 text-base font-medium text-center transition-transform cursor-pointer hover:scale-105"
               style={{
