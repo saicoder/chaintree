@@ -4,10 +4,10 @@
 - [x] Solana smart contract
 - [x] Solana Wallet integration
 - [x] Waiting for transaction
-- [ ] Payment modal integration for wallets & Solana Pay
+- [x] Payment modal integration for wallets & Solana Pay
 - [ ] Analytics for page clicks
 - [ ] Record video
-- [ ] Mobile views
+- [x] Mobile views
 - [x] Create Profile Page
 - [x] Load NFTs from account
 

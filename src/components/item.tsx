@@ -91,7 +91,7 @@ export function Item({ item, onUpdate, onSetIcon, onRemove, handle }: ItemProps)
 
       {item.type === 'wallet' && (
         <div className={`overflow-hidden  ${editMode ? 'max-h-28' : 'max-h-0'} transition-all`}>
-          <div className="p-5 border-t">
+          <div className="flex p-5 border-t">
             <div>
               <label htmlFor="blockchain" className="block text-sm font-medium text-gray-700">
                 Blockchain
@@ -106,6 +106,45 @@ export function Item({ item, onUpdate, onSetIcon, onRemove, handle }: ItemProps)
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="ml-2">
+              <label htmlFor="blockchain" className="block text-sm font-medium text-gray-700">
+                Message
+              </label>
+              <input
+                type="text"
+                placeholder="Optional"
+                value={item.paymentMessage || ''}
+                onChange={(e) => onUpdate({ ...item, paymentMessage: e.target.value })}
+                className="w-32 px-1 py-2 mt-2 text-sm border border-gray-300 rounded-md shadow-sm outline-none"
+              />
+            </div>
+
+            <div className="ml-2">
+              <label htmlFor="blockchain" className="block text-sm font-medium text-gray-700">
+                Amount (in SOL)
+              </label>
+              <input
+                type="number"
+                placeholder="Optional"
+                value={item.paymentAmount || ''}
+                onChange={(e) => onUpdate({ ...item, paymentAmount: e.target.value })}
+                className="w-32 px-1 py-2 mt-2 text-sm border border-gray-300 rounded-md shadow-sm outline-none"
+              />
+            </div>
+
+            <div className="ml-2">
+              <label htmlFor="blockchain" className="block text-sm font-medium text-gray-700">
+                Memo
+              </label>
+              <input
+                type="text"
+                value={item.paymentMemo || ''}
+                onChange={(e) => onUpdate({ ...item, paymentMemo: e.target.value })}
+                placeholder="Optional"
+                className="w-32 px-1 py-2 mt-2 text-sm border border-gray-300 rounded-md shadow-sm outline-none"
+              />
             </div>
           </div>
         </div>

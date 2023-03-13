@@ -1,11 +1,14 @@
 import { Profile } from '@/services/profile'
-import { ItemIcon } from './item-icon'
+import { ItemIcon } from '../item-icon'
 import Link from 'next/link'
 import Image from 'next/image'
 import Jazzicon from 'react-jazzicon'
 import { resolveUrl } from '@/services/ipfs'
 import { Theme } from '@/services/theme'
 import { seedFromString } from '@/services/util'
+import { PaymentModal } from './payment-modal'
+import { WalletAddress, paymentUrlFor } from '@/services/link'
+import { useState } from 'react'
 
 export interface ProfileRenderProps {
   profile: Profile
@@ -16,6 +19,7 @@ export interface ProfileRenderProps {
 
 export function ProfileRender({ profile, themeOverride, noEvents, zoom }: ProfileRenderProps) {
   const theme = themeOverride || profile.theme
+  const [currentWallet, setCurrentWallet] = useState<WalletAddress>()
 
   return (
     <div
@@ -29,6 +33,8 @@ export function ProfileRender({ profile, themeOverride, noEvents, zoom }: Profil
         zoom,
       }}
     >
+      <PaymentModal wallet={currentWallet} onClose={() => setCurrentWallet(undefined)} />
+
       <div className="max-w-2xl px-4 mx-auto">
         {/* Profile Data */}
         <div className="relative w-24 h-24 mx-auto mt-8 overflow-hidden bg-gray-200 rounded-full">
@@ -68,8 +74,16 @@ export function ProfileRender({ profile, themeOverride, noEvents, zoom }: Profil
 
           return (
             <Link
-              href={t.type === 'link' ? t.url : '#'}
+              href={t.type === 'link' ? t.url : paymentUrlFor(t)}
               target="_blank"
+              onClick={
+                t.type !== 'wallet'
+                  ? undefined
+                  : (e) => {
+                      e.preventDefault()
+                      setCurrentWallet(t)
+                    }
+              }
               key={i}
               className="relative block py-4 my-3 text-base font-medium text-center transition-transform cursor-pointer hover:scale-105"
               style={{

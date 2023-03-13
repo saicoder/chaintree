@@ -3,6 +3,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { Web3Storage } from 'web3.storage'
 import Moralis from 'moralis'
 import { NFTCard } from './nft'
+import { useWallet } from '@solana/wallet-adapter-react'
 
 const web3 = new Web3Storage({ token: process.env.NEXT_PUBLIC_WEB3_KEY! })
 
@@ -16,6 +17,7 @@ interface ImagePickerProps {
 
 export function ImagePicker({ open, imageSelected, onClose }: ImagePickerProps) {
   const [nfts, setNfts] = useState<string[]>([])
+  const { publicKey } = useWallet()
 
   const onSelectLocalImage = async () => {
     const file = await new Promise<File>((resolve) => {
@@ -39,10 +41,12 @@ export function ImagePicker({ open, imageSelected, onClose }: ImagePickerProps) 
   }
 
   useEffect(() => {
+    if (!publicKey) return
+
     Moralis.SolApi.account
       .getNFTs({
         network: 'mainnet',
-        address: 'FQ6nvE4MCVFecmWJ5rSeQuz1X1YniMXDUaM6Q3Yda2tR',
+        address: publicKey.toBase58(),
       })
       .then((data) => {
         setNfts(data.result.slice(0, 12).map((t) => t.mint.address))
@@ -107,6 +111,12 @@ export function ImagePicker({ open, imageSelected, onClose }: ImagePickerProps) 
                   ))}
                   <div></div>
                 </div>
+
+                {nfts.length === 0 && (
+                  <div className="p-4 m-4 text-sm font-medium text-center border-2 border-dashed rounded-2xl text-slate-400">
+                    No Any NFTs
+                  </div>
+                )}
               </Dialog.Panel>
             </Transition.Child>
           </div>
