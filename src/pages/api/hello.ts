@@ -1,5 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { Connection, PublicKey, Transaction } from '@solana/web3.js'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Data = {
@@ -16,20 +14,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     return
   }
-
-  const connection = new Connection(process.env.NEXT_PUBLIC_SOLANA_ENDPOINT!)
-  const { blockhash } = await connection.getLatestBlockhash('finalized')
-
-  const tx = new Transaction({
-    feePayer: new PublicKey('CXxXQmjeyjPDVRdL2mENi2cDzHwSeFLbWazA2T9bCAV'),
-    recentBlockhash: blockhash,
-  })
-
-  const serializedTransaction = tx.serialize({ requireAllSignatures: false })
-  const base64 = serializedTransaction.toString('base64')
-
-  res.status(200).json({
-    transaction: base64,
-    message: 'Thanks for your order!',
-  })
 }
