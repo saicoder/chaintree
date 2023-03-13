@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import * as icons from 'react-icons/tb'
+import { allIcons } from './item-icon/all-icons'
+import { ItemIcon } from './item-icon'
 
 interface IconSelectorModalProps {
   open: boolean
@@ -13,10 +14,10 @@ export default function IconSelectorModal(props: IconSelectorModalProps) {
   const [filter, setFilter] = useState('')
 
   const cancelButtonRef = useRef(null)
-  let iconsList = Object.values(icons)
+  let iconsList = allIcons
 
   if (filter.trim().length > 0) {
-    iconsList = iconsList.filter((t) => t.name.toLowerCase().includes(filter.toLowerCase()))
+    iconsList = iconsList.filter((t) => t.toLowerCase().includes(filter.toLowerCase()))
   }
 
   const activeIconId = props.activeIcon?.replace('chaintree://icon/', '')
@@ -77,12 +78,12 @@ export default function IconSelectorModal(props: IconSelectorModalProps) {
                   {iconsList.map((Icon, i) => (
                     <div
                       key={i}
-                      onClick={() => props.onChangeIcon(`chaintree://icon/${Icon.name}`)}
+                      onClick={() => props.onChangeIcon(`chaintree://icon/${Icon}`)}
                       className={`p-1 m-1 text-gray-600 border-2 rounded border-spacing-2 cursor-pointer hover:bg-gray-50 ${
-                        activeIconId === Icon.name && 'border-blue-400'
+                        activeIconId === Icon && 'border-blue-400'
                       }`}
                     >
-                      <Icon size={36} />
+                      <ItemIcon className="text-3xl" url={`chaintree://icon/${Icon}`} />
                     </div>
                   ))}
                 </div>

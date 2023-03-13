@@ -42,7 +42,7 @@ export function Item({ item, onUpdate, onSetIcon, onRemove, handle }: ItemProps)
         <div className="px-1 cursor-pointer w-9" onClick={() => onSetIcon(item)}>
           {item.type !== 'header' && (
             <ItemIcon
-              url={item.icon || 'chaintree://icon/TbFrame'}
+              url={item.icon || 'chaintree://icon/ti-frame'}
               style={{ opacity: !!item.icon ? 1 : 0.3 }}
               className="text-slate-600"
             />

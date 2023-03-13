@@ -1,6 +1,10 @@
+@import "tabler-icons.css";
+@import "cryptofont.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 body{
   @apply antialiased;

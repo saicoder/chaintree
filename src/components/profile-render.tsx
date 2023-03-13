@@ -85,7 +85,7 @@ export function ProfileRender({ profile, themeOverride, noEvents, zoom }: Profil
                   url={t.icon}
                   style={{
                     position: 'absolute',
-                    top: 12,
+                    top: 9,
                     left: 12,
                     color: theme.buttonTextColor,
                   }}

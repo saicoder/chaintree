@@ -4,11 +4,14 @@ skip-lint = false
 [programs.localnet]
 chain_tree = "DaZske7f7vZnLmXrdp1LyAv7VDgdayKbRD2rWBgnEqud"
 
+[programs.devnet]
+chain_tree = "DaZske7f7vZnLmXrdp1LyAv7VDgdayKbRD2rWBgnEqud"
+
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "Localnet"
+cluster = "devnet"
 wallet = "/Users/saicoder/.config/solana/id.json"
 
 [scripts]
