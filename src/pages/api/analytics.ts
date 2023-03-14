@@ -46,8 +46,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     },
   })
 
+  const clicks7Day = Array.from(Array(7)).map((_, i) => {
+    const date = add(start, { days: i }).toISOString().slice(0, 10)
+
+    return {
+      date,
+      _count: clicks7DayRaw.find((t) => t.date === date)?._count || 0,
+    }
+  })
+
   const clicks7DayByLinkRaw = await prisma.click.groupBy({
-    by: ['linkId', 'date'],
+    by: ['linkId'],
     _count: true,
     where: {
       profileUsername: username,
@@ -58,15 +67,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         date: 'desc',
       },
     },
-  })
-
-  const clicks7Day = Array.from(Array(7)).map((_, i) => {
-    const date = add(start, { days: i }).toISOString().slice(0, 10)
-
-    return {
-      date,
-      _count: clicks7DayRaw.find((t) => t.date === date)?._count || 0,
-    }
   })
 
   const clicks7DayByLink = clicks7DayByLinkRaw
