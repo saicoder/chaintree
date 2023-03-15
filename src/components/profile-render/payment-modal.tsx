@@ -59,7 +59,7 @@ export function PaymentModal({ wallet, onClose }: PaymentModalProps) {
             >
               <Dialog.Panel className="relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:w-full sm:max-w-sm">
                 <div className="py-3 font-semibold text-center text-gray-700 border-b bg-gray-50">
-                  Payment: {wallet?.type}
+                  Payment: {wallet?.label}
                 </div>
 
                 <div className="p-5">
