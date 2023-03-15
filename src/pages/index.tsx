@@ -157,7 +157,7 @@ const HomePage = () => {
         <nav className="flex items-center justify-between" aria-label="Global">
           <div className="flex lg:flex-1">
             <Link href="/" className="-m-1.5 p-1.5">
-              <img className="h-8" src={logo.src} alt="" />
+              <Image className="h-8" src={logo} alt="" />
             </Link>
           </div>
 
@@ -241,7 +241,7 @@ const HomePage = () => {
               </div>
               <div className="flex items-center justify-center px-20 pb-10 md:pb-0 md:px-28">
                 <div className="w-full  aspect-[0.48] relative bg-gray-50 rounded-[40px] overflow-hidden border-8 border-black">
-                  <img src="/hero3.png" alt="" />
+                  <Image src="/hero3.png" fill alt="" />
                 </div>
               </div>
             </div>
